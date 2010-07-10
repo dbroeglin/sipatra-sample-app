@@ -1,7 +1,7 @@
 puts "LOADING registrar application"
 
 invite 'sip:standard@.*' do
-    proxy "sip:0970757075@#{request.getRequestURI.getHost}"
+    proxy "sip:0123456789@#{request.getRequestURI.getHost}"
 end
 
 register do
