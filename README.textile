@@ -1,3 +1,3 @@
 h1. SIPATRA
 
-This is a sample SIP application using Sipatra.
+This is a sample SIP application using "Sipatra":http://github.com/dbroeglin/sipatra. Sipatra is a Sinatra like Ruby DSL for writing SIP Servlet applications.
