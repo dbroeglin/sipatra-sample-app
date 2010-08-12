@@ -1,12 +1,11 @@
 puts "LOADING registrar application"
 
 require 'java'
-java_import javax.servlet.sip.SipServletResponse
 
-Binding = Struct::new(:contact, :call_id, :cseq, :expires)
-class Binding
+ContactBinding = Struct::new(:contact, :call_id, :cseq, :expires)
+class ContactBinding
   def to_s
-    "Binding[#{contact.to_s}]: call_id: #{call_id}, cseq: #{cseq}, expires: #{expires}"
+    "ContactBinding[#{contact.to_s}]: call_id: #{call_id}, cseq: #{cseq}, expires: #{expires}"
   end
 end
 
@@ -16,10 +15,7 @@ def canonicalTo(uri)
   "sip:#{uri.user}@#{uri.host.downcase}"
 end
 
-register do
-  send_response SipServletResponse.SC_BAD_REQUEST, "Invalid TOTO" 
-  break
-  
+register do  
   aor = canonicalTo(request.to.uri)
   puts "AOR: #{aor}"
 
@@ -31,7 +27,7 @@ register do
     contact
   end
   if wildcard && contacts.size > 1
-    send_response SipServletResponse.SC_BAD_REQUEST, "Invalid wildcard" 
+    send_response :bad_request, "Invalid wildcard" 
     break
   end
   cseq = header[:CSEQ].split(/ /).first.to_i
@@ -48,7 +44,7 @@ register do
         expires = 300  if expires < 0     # default
         expires = 3600 if expires > 3600  # max expire
         if expires < 60 # min expires
-          send_response SipServletResponse.SC_INTERVAL_TOO_BRIEF do |response|
+          send_response :interval_too_brief do |response|
             response.addHeader('Min-Expires', 60)
           end
           break
@@ -57,7 +53,7 @@ register do
       binding = bindings.find { |binding| binding.contact == contact.uri }
       if binding
         if (request.call_id == binding.call_id && cseq < binding.cseq)
-          send_response SipServletResponse.SC_SERVER_INTERNAL_ERROR, "Lower CSeq"
+          send_response :server_internal_error, "Lower CSeq"
           break
         end
         if expires == 0
@@ -70,14 +66,14 @@ register do
           puts "  UPDATED BINDING: #{binding}"
         end
       elsif expires != 0
-        binding = Binding::new(contact.uri, request.call_id, cseq, expires) # TODO: allow prunning
+        binding = ContactBinding::new(contact.uri, request.call_id, cseq, expires) # TODO: allow prunning
         puts "  ADDED BINDING: #{binding}"
         bindings << binding
       end
     end
   end
   puts "  BINDINGS for #{aor} are #{bindings.map(&:contact).map(&:to_s).join(", ")}"
-  send_response SipServletResponse.SC_OK do |response|
+  send_response :ok do |response|
     response.addHeader('Date', "TODO")
     # TODO add Contact headers
   end    
