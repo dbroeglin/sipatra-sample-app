@@ -1,7 +1,14 @@
 puts "LOADING registrar application"
 
 require 'java'
-SipServletResponse = javax.servlet.sip.SipServletResponse
+java_import javax.servlet.sip.SipServletResponse
+
+Binding = Struct::new(:contact, :call_id, :cseq, :expires)
+class Binding
+  def to_s
+    "Binding[#{contact.to_s}]: call_id: #{call_id}, cseq: #{cseq}, expires: #{expires}"
+  end
+end
 
 registrations = {}
 
@@ -10,13 +17,9 @@ def canonicalTo(uri)
 end
 
 register do
-  Binding = Struct::new(:contact, :call_id, :cseq, :expires)
-  class Binding
-    def to_s
-      "Binding[#{contact.to_s}]: call_id: #{call_id}, cseq: #{cseq}, expires: #{expires}"
-    end
-  end
-
+  send_response SipServletResponse.SC_BAD_REQUEST, "Invalid TOTO" 
+  break
+  
   aor = canonicalTo(request.to.uri)
   puts "AOR: #{aor}"
 
