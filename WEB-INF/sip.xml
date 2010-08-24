@@ -6,8 +6,8 @@
   <app-name>sipatra-sample-app</app-name>
 
   <servlet>
-      <servlet-name>jruby</servlet-name>
-      <servlet-class>org.cipango.jruby.JRubyServlet</servlet-class>
+      <servlet-name>sipatra</servlet-name>
+      <servlet-class>org.cipango.sipatra.SipatraServlet</servlet-class>
       <load-on-startup/>
   </servlet>
 </sip-app>
