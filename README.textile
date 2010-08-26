@@ -1,3 +1,12 @@
-h1. SIPATRA
+h1. SIPATRA SAMPLE APPLICATION
 
 This is a sample SIP application using "Sipatra":http://github.com/dbroeglin/sipatra. Sipatra is a Sinatra like Ruby DSL for writing SIP Servlet applications.
+
+The application is actually a _converged_ application packaging both a Sipatra and a Sinatra application.
+
+To generate the WAR file install "Warbler":http://kenai.com/projects/warbler/pages/Home (@gem install warbler@) and :
+
+<pre>
+cd sipatra-sample-app
+warble
+</pre>
