@@ -6,6 +6,6 @@
   <servlet>
       <servlet-name>sipatra</servlet-name>
       <servlet-class>org.cipango.sipatra.SipatraServlet</servlet-class>
-      <load-on-startup/>
+      <load-on-startup>1</load-on-startup>
   </servlet>
 </sip-app>
