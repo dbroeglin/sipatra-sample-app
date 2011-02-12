@@ -63,7 +63,7 @@ Warbler::Config.new do |config|
   # config.gems += ["activerecord-jdbcmysql-adapter", "jruby-openssl"]
   # config.gems << "tzinfo"
 
-  config.gems = ['sinatra']
+  config.gems = ['sinatra', 'sipatra']
   
   # Uncomment this if you don't want to package rails gem.
   # config.gems -= ["rails"]
